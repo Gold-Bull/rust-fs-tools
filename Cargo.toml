@@ -1,0 +1,18 @@
+[package]
+name = "rust_walk"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.33"
+jwalk = "0.8.1"
+clap = { version = "4.4.13", features = ["derive"] }
+rayon = "1.8.1"
+bincode = { version = "2.0.0-rc", features = ["serde"] }
+num_cpus = "1.16.0"
+
+[[bin]]
+name = "rust_walk"
+path = "src/main.rs"
