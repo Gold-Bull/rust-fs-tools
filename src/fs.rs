@@ -18,11 +18,23 @@ struct FsEntry {
     pub mode: u32,
     pub mtime: i64,
     pub inode: u64,
+    pub size: u64,
 }
 
 #[derive(Encode, Decode, PartialEq, Debug)]
 struct FsEntries {
     pub entries: Vec<FsEntry>,
+}
+
+#[derive(Encode, Decode, PartialEq, Debug, Clone)]
+struct ChangedFsEntry {
+    pub name: Box<String>,
+    pub is_deleted: bool,
+}
+
+#[derive(Encode, Decode, PartialEq, Debug)]
+struct ChangedFsEntries {
+    pub entries: Vec<ChangedFsEntry>,
 }
 
 fn walk_dir(
@@ -57,6 +69,7 @@ fn walk_dir(
                         mode: metadata.mode(),
                         mtime: metadata.mtime(),
                         inode: metadata.ino(),
+                        size: metadata.size(),
                     });
                 }
             }
@@ -96,11 +109,11 @@ pub(crate) fn compare_state(
             .collect::<HashMap<String, FsEntry>>();
     }
 
-    let value: Vec<FsEntry> = walk_dir(root_path, parallelism, false, false)
+    let value: Vec<ChangedFsEntry> = walk_dir(root_path, parallelism, false, false)
         .par_iter()
-        .map(|entry| entry.clone())
-        .filter(|entry| {
-            let entry1 = map_data.get_key_value(entry.name.as_str());
+        .map(|entry| {
+            let entry_name = entry.name.clone();
+            let entry1 = map_data.get_key_value(entry_name.as_str());
             if entry1.is_some() {
                 let entry2 = entry1.unwrap();
                 let fsentry = entry2.1;
@@ -109,18 +122,27 @@ pub(crate) fn compare_state(
                     || entry.mode != fsentry.mode
                     || entry.mtime != fsentry.mtime
                     || entry.inode != fsentry.inode
+                    || entry.size != fsentry.size
                 {
-                    return true;
+                    return Ok(ChangedFsEntry {
+                        name: entry_name,
+                        is_deleted: false,
+                    });
                 }
             } else {
-                return true;
+                return Ok(ChangedFsEntry {
+                    name: entry_name,
+                    is_deleted: true,
+                });
             }
-            false
+            Err(())
         })
+        .filter(|entry| entry.is_ok())
+        .map(|entry| entry.unwrap())
         .collect();
 
     if write_changes_to.is_some() {
-        let entries = FsEntries { entries: value };
+        let entries = ChangedFsEntries { entries: value };
         let mut writer = BufWriter::new(File::create(write_changes_to.unwrap()).unwrap());
         bincode::encode_into_std_write(&entries, &mut writer, bincode::config::standard()).unwrap();
     }
