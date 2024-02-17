@@ -77,8 +77,7 @@ pub(crate) struct Args {
 impl Args {
     pub fn threads(&self) -> usize {
         let cpus = num_cpus::get();
-        return self
-            .threads
+        self.threads
             .clone()
             .unwrap_or_else(|| {
                 if cfg!(target_vendor = "apple") {
@@ -87,7 +86,7 @@ impl Args {
                     std::thread::available_parallelism().unwrap_or(NonZeroUsize::new(cpus).unwrap())
                 }
             })
-            .get();
+            .get()
     }
 
     pub fn parallelism(&self) -> Parallelism {

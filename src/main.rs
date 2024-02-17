@@ -1,7 +1,7 @@
-mod args;
+mod cli_args;
 mod fs;
 
-use self::args::{Args, SubCommand};
+use self::cli_args::{Args, SubCommand};
 use clap::Parser;
 use std::num::NonZeroUsize;
 
@@ -41,7 +41,7 @@ fn main() {
                 read_state_from.clone().unwrap(),
                 write_changes_to.clone(),
             );
-        },
+        }
         None => {
             println!("There was no subcommand given");
         }
