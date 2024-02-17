@@ -1,0 +1,20 @@
+[package]
+name = "fs_compare"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+description = "A tool to compare two file system state files"
+
+[dependencies]
+clap = { version = "4.5.1", features = ["derive"] }
+num_cpus = "1.16.0"
+rayon = "1.8.1"
+bincode = { version = "2.0.0-rc", features = ["serde"] }
+
+[dependencies.utils]
+path = "../utils"
+
+[[bin]]
+name = "fs_compare"
+path = "src/main.rs"

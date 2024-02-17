@@ -1,6 +1,10 @@
 {
     "rust-analyzer.linkedProjects": [
-        "./Cargo.toml"
+        "./Cargo.toml",
+        "./projects/fs_compare/Cargo.toml",
+        "./projects/fs_state_gen/Cargo.toml",
+        "./projects/run_rsync/Cargo.toml",
+        "./projects/utils/Cargo.toml"
     ],
     "[rust]": {
         "editor.defaultFormatter": "rust-lang.rust-analyzer",
