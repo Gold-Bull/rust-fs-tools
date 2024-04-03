@@ -11,7 +11,7 @@ resolver = "2"
 version = "0.1.0"
 edition = "2021"
 authors = ["Sailesh Bellamkonda <4201725+SaileshBellamkonda@users.noreply.github.com>"]
-documentation = "https://github.com/Gold-Bull/rust-fs-tools"
+documentation = "https://github.com/SaileshBellamkonda/rust-fs-tools"
 
 [workspace.dependencies]
 chrono = "0.4.33"

@@ -24,7 +24,7 @@ pub(crate) struct Args {
         short = 's',
         value_parser = check_if_directory_exists(),
         help = "",
-        long_help = "Path to the source filesystem state file"
+        long_help = "Path to the source directory"
     )]
     pub src_path: PathBuf,
     #[arg(
@@ -33,7 +33,7 @@ pub(crate) struct Args {
         short = 'd',
         value_parser = check_if_directory_exists(),
         help = "",
-        long_help = "Path to the destination filesystem state file"
+        long_help = "Path to the destination directory"
     )]
     pub dst_path: PathBuf,
     #[arg(
