@@ -1,0 +1,22 @@
+[package]
+name = "run_rsync"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+documentation.workspace = true
+description = "Run rsync based on the comparisions of two file system states"
+
+[dependencies]
+clap = { version = "4.5.1", features = ["derive"] }
+jwalk = "0.8.1"
+num_cpus = "1.16.0"
+rayon = "1.8.1"
+bincode = { version = "2.0.0-rc", features = ["serde"] }
+uuid = {version = "1.7.0", features = ["v4","fast-rng"]}
+
+[dependencies.utils]
+path = "../utils"
+
+[[bin]]
+name = "run_rsync"
+path = "src/main.rs"

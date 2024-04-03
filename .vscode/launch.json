@@ -7,19 +7,35 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug executable 'rust_walk'",
+            "name": "Debug executable 'fs_compare'",
             "cargo": {
                 "args": [
                     "build",
-                    "--bin=rust_walk",
-                    "--package=rust_walk"
+                    "--package=fs_compare"
                 ],
                 "filter": {
-                    "name": "rust_walk",
+                    "name": "fs_compare",
                     "kind": "bin"
                 }
             },
-            "args": ["-o", "rust_walk.bin"],
+            "args": ["--help"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'fs_state_gen'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--package=fs_state_gen"
+                ],
+                "filter": {
+                    "name": "fs_state_gen",
+                    "kind": "bin"
+                }
+            },
+            "args": ["-s", "/mnt/wsl/dev/", "-o", "/tmp/src_state.bin"],
             "cwd": "${workspaceFolder}"
         }
     ]
