@@ -1,12 +1,13 @@
-name: Build
+name: Build & Release
 
 on:
   push:
     branches:
-    - "main"
+      - "main"
+      - "feature/*"
   pull_request:
     branches:
-    - "main"
+      - "main"
 
 env:
   CARGO_TERM_COLOR: always
@@ -17,6 +18,18 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build
-      run: cargo build --verbose
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build
+        run: cargo build -r --verbose
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Binary
+          path: |
+            target/release/fs_compare
+            target/release/fs_state_gen
+            target/release/run_rsync
+
