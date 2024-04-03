@@ -21,3 +21,9 @@ rayon = "1.8.1"
 bincode = { version = "2.0.0-rc", features = ["serde"] }
 num_cpus = "1.16.0"
 uuid = {version = "1.7.0", features = ["v4","fast-rng"]}
+
+[profile.release]
+strip = true
+lto = true
+codegen-units = 1
+opt-level = "z"
