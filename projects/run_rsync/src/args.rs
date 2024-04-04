@@ -80,7 +80,7 @@ pub(crate) struct Args {
         id = "rsync arguments",
         long="rsync-args",
         num_args = 1..,
-        default_value = "-q -lptgoD --numeric-ids --inplace",
+        default_value = "-q -lptgoD -d --numeric-ids --inplace",
         help = "",
         value_delimiter = ' ',
         long_help = "Arguments to pass to rsync command, default is \"-q -lptgoD --numeric-ids --inplace\""
