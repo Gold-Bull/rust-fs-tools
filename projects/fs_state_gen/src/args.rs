@@ -46,6 +46,16 @@ pub(crate) struct Args {
         long_help="Path to write the filesystem state file to"
     )]
     pub write_state_to: PathBuf,
+    #[arg(
+        id = "folders to ignore",
+        long="ignore-folders",
+        num_args = 0..,
+        default_value = ".snapshot .zfs",
+        help = "",
+        value_delimiter = ' ',
+        long_help = "Folders to skip when generating the state file"
+    )]
+    pub folders_to_ignore: Vec<String>,
 }
 
 impl Args {
