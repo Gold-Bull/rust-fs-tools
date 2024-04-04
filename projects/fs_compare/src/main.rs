@@ -63,7 +63,7 @@ fn main() {
                 if fsentry.owner != src_fsentry.owner
                     || fsentry.group != src_fsentry.group
                     || fsentry.mode != src_fsentry.mode
-                    || fsentry.mtime != src_fsentry.mtime
+                    || fsentry.mtime < src_fsentry.mtime
                     || fsentry.inode != src_fsentry.inode
                     || fsentry.size != src_fsentry.size
                     || fsentry.is_dir != src_fsentry.is_dir
