@@ -42,9 +42,28 @@ pub fn walk_dir(
     root_path: PathBuf,
     parallelism: Parallelism,
     follow_links: bool,
+    skip_hidden: bool,
     sort: bool,
+    folder_to_ignore: Vec<String>,
 ) -> Vec<FsEntry> {
-    WalkDirGeneric::<(bool, bool)>::new(root_path)
+    WalkDirGeneric::<(Vec<String>, bool)>::new(root_path)
+        .root_read_dir_state(folder_to_ignore.clone())
+        .process_read_dir(|_depth, _path, read_dir_state, children| {
+            children.retain(|dir_entry_result| {
+                dir_entry_result
+                    .as_ref()
+                    .map(|dir_entry| {
+                        let file_name = dir_entry
+                            .file_name
+                            .clone()
+                            .into_string()
+                            .unwrap_or(String::new());
+                        !read_dir_state.into_iter().any(|s| s == &file_name)
+                    })
+                    .unwrap_or(false)
+            });
+        })
+        .skip_hidden(skip_hidden)
         .follow_links(follow_links)
         .parallelism(parallelism)
         .sort(sort)

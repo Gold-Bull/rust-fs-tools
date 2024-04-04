@@ -17,24 +17,32 @@ fn main() {
     let root_path = args.path.clone();
     let root_path_str = root_path.to_str().unwrap();
     let write_state_to = args.write_state_to.clone();
+    let folders_to_ignore = args.folders_to_ignore.clone();
 
     ThreadPoolBuilder::new()
         .num_threads(args.threads())
         .build_global()
         .unwrap();
 
-    let value: Vec<FsEntry> = utils_fs::walk_dir(root_path.clone(), parallelism, false, false)
-        .par_iter()
-        .map(|entry| {
-            let mut entry1 = entry.clone();
-            entry1.name = entry1
-                .name
-                .trim_start_matches(root_path_str)
-                .trim_start_matches("/")
-                .to_string();
-            entry1
-        })
-        .collect();
+    let value: Vec<FsEntry> = utils_fs::walk_dir(
+        root_path.clone(),
+        parallelism,
+        false,
+        false,
+        false,
+        folders_to_ignore,
+    )
+    .par_iter()
+    .map(|entry| {
+        let mut entry1 = entry.clone();
+        entry1.name = entry1
+            .name
+            .trim_start_matches(root_path_str)
+            .trim_start_matches("/")
+            .to_string();
+        entry1
+    })
+    .collect();
 
     let entries = FsEntries { entries: value };
     let mut writer = BufWriter::new(File::create(write_state_to).unwrap());

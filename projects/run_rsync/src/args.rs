@@ -48,8 +48,8 @@ pub(crate) struct Args {
         id = "chunk_size",
         long,
         short = 'c',
-        help = "Number of files to process in a single rsync command",
-        long_help = "Number of files to process in a single rsync command, defaults to largest integer less than or equal to \"changed files count / threads count\""
+        help = "",
+        long_help = "Number of files to process in a single rsync command"
     )]
     pub chunk_size: Option<NonZeroUsize>,
     #[arg(
@@ -80,10 +80,10 @@ pub(crate) struct Args {
         id = "rsync arguments",
         long="rsync-args",
         num_args = 1..,
-        default_value = "-q -lptgoD --numeric-ids --inplace",
+        default_value = "-q -lptgoD -d --numeric-ids --inplace",
         help = "",
         value_delimiter = ' ',
-        long_help = "Arguments to pass to rsync command, default is \"-q -lptgoD --numeric-ids --inplace\""
+        long_help = "Arguments to pass to rsync command"
     )]
     pub rsync_args: Vec<String>,
 }
